@@ -49,7 +49,7 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
                 if isinstance(item['platPrice'], int):
                     itemsText += f' {item["platPrice"]} p'
                 else:
-                    itemsText += f' <span style="color:red">{item["platPrice"]}</span>'
+                    itemsText += f' ***{item["platPrice"]}***'
                 itemsText += f' | {"{:,}".format(item["standingCost"])} Standing'
                 if isinstance(item['platPrice'], int):
                     itemsText += f' ({"{:.2f}".format(item["platPrice"]/item["standingCost"]*1000)} p/KS)'
