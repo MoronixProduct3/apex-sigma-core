@@ -28,12 +28,13 @@ thumnail = 'https://i.imgur.com/VZgKgFO.png'
 api_endpoint = 'http://api.royal-destiny.com/syndicates'
 royaldestiny_color = 0xe88f03
 royaldestiny_logo = 'https://i.imgur.com/m4ngGxb.png'
+item_count = 3
 
 async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
     initial_response = discord.Embed(color=0xFFCC66, title='🔬 Processing...')
     init_resp_msg = await message.channel.send(embed=initial_response)
     response = discord.Embed(color=royaldestiny_color)
-    response.set_author(name='Current syndicate offerings:', url=wiki_syndicates, icon_url=wiki_icon)
+    response.set_author(name='Current best syndicate offerings:', url=wiki_syndicates, icon_url=wiki_icon)
     response.set_thumbnail(url=thumnail)
     response.set_footer(text='These price listings were aggregated by the Royal Destiny community', icon_url=royaldestiny_logo)
     async with aiohttp.ClientSession() as session:
@@ -43,9 +44,14 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
     if data['syndicates']:
         for syndicate in data['syndicates']:
             itemsText = ''
-            for item in syndicate['offerings'][0:3]:
-                itemsText += f'[{item["name"]}]({wfmarket+item["marketURL"]}): {item["platPrice"]} p | {item["standingCost"]} Standing'
-                if (isinstance(item['platPrice'], int)):
+            for item in syndicate['offerings'][0:item_count]:
+                itemsText += f'[{item["name"]}]({wfmarket+item["marketURL"]}):'
+                if isinstance(item['platPrice'], int):
+                    itemsText += f' {item["platPrice"]} p'
+                else:
+                    itemsText += f' <span style="color:red">{item["platPrice"]}</span>'
+                itemsText += f' | {"{:,}".format(item["standingCost"])} Standing'
+                if isinstance(item['platPrice'], int):
                     itemsText += f' ({"{:.2f}".format(item["platPrice"]/item["standingCost"]*1000)} p/KS)'
                 itemsText += '\n'                
             response.add_field(name=syndicate['name'], value=itemsText)
