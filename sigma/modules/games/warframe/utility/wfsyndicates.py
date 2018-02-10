@@ -38,7 +38,7 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
         for syndicate in data['syndicates']:
             items = ''
             for item in syndicate['offerings'][0:3]:
-                items += f'__{item['name']}:__ {item['platPrice']}'
+                items += f'__{item["name"]}:__ {item["platPrice"]}'
             response.add_field(name=syndicate['name'], value=items)
     try:
         await init_resp_msg.edit(embed=response)
