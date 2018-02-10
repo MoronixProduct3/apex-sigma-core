@@ -39,9 +39,9 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
         for syndicate in data['syndicates']:
             itemsText = ''
             for item in syndicate['offerings'][0:3]:
-                itemsText += f'[{item["name"]}]({wfmarket+item["marketURL"]}): {item["platPrice"]}p'
+                itemsText += f'[{item["name"]}]({wfmarket+item["marketURL"]}): {item["platPrice"]} p | {item["standingCost"]} Standing'
                 if (isinstance(item['platPrice'], int)):
-                    itemsText += f' ({"{:.3f}".format(item["platPrice"]/item["standingCost"]*1000)}p/KS'
+                    itemsText += f' ({"{:.f}".format(item["platPrice"]/item["standingCost"]*1000)} p/KS)'
                 itemsText += '\n'                
             response.add_field(name=syndicate['name'], value=itemsText)
     try:
