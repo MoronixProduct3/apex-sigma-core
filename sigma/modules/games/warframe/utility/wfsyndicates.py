@@ -59,4 +59,3 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
         await init_resp_msg.edit(embed=response)
     except discord.NotFound:
         pass
-    
