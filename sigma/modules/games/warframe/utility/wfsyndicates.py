@@ -21,6 +21,7 @@ import discord
 
 from sigma.core.mechanics.command import SigmaCommand
 
+wfmarket = 'https://warframe.market/items/'
 api_endpoint = 'http://api.royal-destiny.com/syndicates'
 royaldestiny_color = 0xe88f03
 royaldestiny_logo = 'https://i.imgur.com/m4ngGxb.png'
@@ -36,10 +37,13 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
             data = json.loads(page_data)
     if data['syndicates']:
         for syndicate in data['syndicates']:
-            items = ''
+            itemsText = ''
             for item in syndicate['offerings'][0:3]:
-                items += f'__{item["name"]}:__ {item["platPrice"]}'
-            response.add_field(name=syndicate['name'], value=items)
+                itemsText += f'[{item["name"]}]({wfmarket+item["marketURL"]}): {item["platPrice"]}p'
+                if (isinstance(item['platPrice'], int)):
+                    itemsText += f' ({"{:.3f}".format(item["platPrice"]/item["standingCost"]*1000)}p/KS'
+                itemsText += '\n'                
+            response.add_field(name=syndicate['name'], value=itemsText)
     try:
         await init_resp_msg.edit(embed=response)
     except discord.NotFound:
