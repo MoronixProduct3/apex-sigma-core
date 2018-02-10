@@ -36,7 +36,10 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
             data = json.loads(page_data)
     if data['syndicates']:
         for syndicate in data['syndicates']:
-            response.add_field(name=syndicate['name'], value='Items go here')
+            items = ''
+            for item in syndicate['offerings'][0:3]:
+                items += f'__{item['name']}:__ {item['platPrice']}'
+            response.add_field(name=syndicate['name'], value=items)
     try:
         await init_resp_msg.edit(embed=response)
     except discord.NotFound:
