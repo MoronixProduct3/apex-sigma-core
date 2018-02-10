@@ -30,13 +30,19 @@ royaldestiny_color = 0xe88f03
 royaldestiny_logo = 'https://i.imgur.com/m4ngGxb.png'
 item_count = 3
 
+
 async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
     initial_response = discord.Embed(color=0xFFCC66, title='🔬 Processing...')
     init_resp_msg = await message.channel.send(embed=initial_response)
     response = discord.Embed(color=royaldestiny_color)
-    response.set_author(name='Current best syndicate offerings:', url=wiki_syndicates, icon_url=wiki_icon)
+    response.set_author(
+        name='Current best syndicate offerings:',
+        url=wiki_syndicates,
+        icon_url=wiki_icon)
     response.set_thumbnail(url=thumnail)
-    response.set_footer(text='These price listings were aggregated by the Royal Destiny community', icon_url=royaldestiny_logo)
+    response.set_footer(
+        text='These price listings were aggregated by the Royal Destiny community',
+        icon_url=royaldestiny_logo)
     async with aiohttp.ClientSession() as session:
         async with session.get(api_endpoint) as data:
             page_data = await data.read()
@@ -53,7 +59,7 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
                 itemsText += f' | {"{:,}".format(item["standingCost"])} Standing'
                 if isinstance(item['platPrice'], int):
                     itemsText += f' ({"{:.2f}".format(item["platPrice"]/item["standingCost"]*1000)} p/KS)'
-                itemsText += '\n'                
+                itemsText += '\n'
             response.add_field(name=syndicate['name'], value=itemsText)
     try:
         await init_resp_msg.edit(embed=response)
