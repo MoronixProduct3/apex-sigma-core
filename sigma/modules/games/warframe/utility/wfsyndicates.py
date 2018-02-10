@@ -41,7 +41,7 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
         icon_url=wiki_icon)
     response.set_thumbnail(url=thumnail)
     response.set_footer(
-        text='These price listings were aggregated by the Royal Destiny community',
+        text='These price listings are aggregated by the Royal Destiny community',
         icon_url=royaldestiny_logo)
     async with aiohttp.ClientSession() as session:
         async with session.get(api_endpoint) as data:
