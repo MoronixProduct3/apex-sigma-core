@@ -22,6 +22,8 @@ import discord
 from sigma.core.mechanics.command import SigmaCommand
 
 wfmarket = 'https://warframe.market/items/'
+wiki_syndicates = 'http://warframe.wikia.com/wiki/Syndicates'
+wiki_icon = 'https://i.imgur.com/g64jHHS.png'
 api_endpoint = 'http://api.royal-destiny.com/syndicates'
 royaldestiny_color = 0xe88f03
 royaldestiny_logo = 'https://i.imgur.com/m4ngGxb.png'
@@ -30,7 +32,8 @@ async def wfsyndicates(cmd: SigmaCommand, message: discord.Message, args: list):
     initial_response = discord.Embed(color=0xFFCC66, title='🔬 Processing...')
     init_resp_msg = await message.channel.send(embed=initial_response)
     response = discord.Embed(color=royaldestiny_color)
-    response.set_author(name='Best syndicate offerings:')
+    response.set_author(name='Current syndicate offerings:', url=wiki_syndicates, icon_url=wiki_icon)
+    response.set_footer(text='These price listings were aggregated by the Royal Destiny community', icon_url=royaldestiny_logo)
     async with aiohttp.ClientSession() as session:
         async with session.get(api_endpoint) as data:
             page_data = await data.read()
